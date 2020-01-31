@@ -1,0 +1,108 @@
+<html>
+<head>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-300">
+    <div class="bg-white">
+        <!-- Current date -->
+        <p id="current-date" class="bg-gray-100 text-2xl tracking-widest p-4 text-center"></p>
+
+        <!-- Month selection -->
+        <div class="flex justify-between">
+            <a onclick="prevMonth()" class="cursor-pointer p-3 inline-block bg-gray-100 hover:bg-gray-200">〈</a>
+            <p id="month-selection" class="p-3 text-center"></p>
+            <a onclick="nextMonth()" class="cursor-pointer p-3 inline-block bg-gray-100 hover:bg-gray-200">〉</a>
+        </div>
+
+        <!-- Day selection -->
+        <!-- No css grid support for Tailwind yet! -->
+        <div id="day-selection" class="flex flex-wrap"></div>
+    </div>
+
+    <script>
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+        var currentDate = new Date()
+
+        var selectedMonthDO = new Date()
+
+        // Render
+        renderCurrentDate()
+        renderMonthSelection()
+        renderDaySelection()
+
+        // Func
+        function prevMonth() {
+            selectedMonthDO.addMonth(-1)
+            renderMonthSelection()
+            renderDaySelection()
+        }
+
+        function nextMonth() {
+            selectedMonthDO.addMonth(1)
+            renderMonthSelection()
+            renderDaySelection()
+        }
+
+        function renderMonthSelection() {
+            document.getElementById('month-selection').textContent = months[selectedMonthDO.getMonth()] + ' ' + selectedMonthDO.getFullYear()
+        }
+
+        function renderDaySelection() {
+
+            // Clear existing nodes first
+            let daySelectionNode = document.getElementById('day-selection')
+
+            while (daySelectionNode.firstChild) {
+                daySelectionNode.removeChild(daySelectionNode.firstChild)
+            }
+
+            // Get total days in month
+            let totalDaysInMonth = daysInMonth(selectedMonthDO.getMonth() + 1, selectedMonthDO.getFullYear())
+
+            // Append new nodes
+            for (i = 1; i <= totalDaysInMonth; i++) {
+                let el = document.createElement('a')
+                el.textContent = i
+                // Customise Tailwind classes here
+                el.className = 'day w-1/6 text-center p-3 inline-block cursor-pointer'
+                document.getElementById('day-selection').appendChild(el)
+
+
+                // Optional
+                if (currentDate.getDate() == i && currentDate.getMonth() == selectedMonthDO.getMonth() && currentDate.getFullYear() == selectedMonthDO.getFullYear()) {
+                    el.classList.add('bg-gray-400')
+                }
+            }
+
+            // Assign click event
+            document.querySelectorAll('.day').forEach((el) => {
+                el.addEventListener('click', () => {
+                    currentDate.setDate(parseInt(el.textContent))
+                    currentDate.setMonth(selectedMonthDO.getMonth())
+                    currentDate.setYear(selectedMonthDO.getFullYear())
+
+                    renderDaySelection()
+                    renderCurrentDate()
+                })
+            })
+
+        }
+
+        function renderCurrentDate() {
+            document.getElementById('current-date').textContent = currentDate.toLocaleDateString('en-GB')
+        }
+
+        function daysInMonth(month, year) {
+            return new Date(year, month, 0).getDate();
+        }
+
+        // Prototypes
+        Date.prototype.addMonth = function(n) {
+            return new Date(this.setMonth(this.getMonth() + n, 1))
+        }
+
+    </script>
+</body>
+</html>
