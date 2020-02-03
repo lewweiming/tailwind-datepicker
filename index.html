@@ -85,6 +85,9 @@
 
                     renderDaySelection()
                     renderCurrentDate()
+                    
+                    // Optional - Extended from original source
+                    document.getElementById('datepicker').value = currentDate.toISOString().split('T')[0]
                 })
             })
 
