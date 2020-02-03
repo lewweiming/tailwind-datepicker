@@ -6,3 +6,10 @@ A basic date picker built with JS + Tailwind
 
 ## Codepen Preview
 [Codepen](https://codepen.io/webconxept/pen/povXVRg)
+
+## Instructions
+* Load the Javascript
+* Insert the html datepicker code
+* Create an input box with id="datepicker"
+* Done!
+
