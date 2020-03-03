@@ -66,7 +66,7 @@ function renderDay(month, year) {
     // Append month header
     let el = document.createElement('p')
     el.textContent = months[month - 1] + ' ' + year
-    el.className = 'p-3 font-semibold text-lg text-gray-700'
+    el.className = 'p-3 font-semibold text-lg text-gray-700 bg-gray-100'
     document.getElementById('m' + month).appendChild(el)
 
     // Append days in month
